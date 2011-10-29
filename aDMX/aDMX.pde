@@ -10,18 +10,34 @@
 //#define RCV_ENA 0
 //#define DEBUG_OUT 52
 
+// Pins for v1
+//#define RX_IN 7
+//#define TX_OUT 8
+//#define DRV_ENA 9
+//#define RCV_ENA 0
+//#define ROTARY_A 5
+//#define ROTARY_B 6
+//#define BUTTON_A 4
+//#define BUTTON_B 3
+//#define BUTTON_R 2
+//#define LED_A 10
+//#define LED_B 11
+//#define DEBUG_OUT 12
+
+// Pins for v2
 #define RX_IN 7
 #define TX_OUT 8
 #define DRV_ENA 9
 #define RCV_ENA 0
-#define ROTARY_A 5
-#define ROTARY_B 6
-#define BUTTON_A 4
-#define BUTTON_B 3
-#define BUTTON_R 2
-#define LED_A 10
-#define LED_B 11
+#define ROTARY_A 3
+#define ROTARY_B 4
+#define BUTTON_A A2
+#define BUTTON_B A3
+#define BUTTON_R A4
+#define LED_A 5
+#define LED_B 6
 #define DEBUG_OUT 12
+
 
 uint8_t R, G, B;
 uint16_t H, S, V;
