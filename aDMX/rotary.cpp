@@ -24,7 +24,8 @@ int8_t Rotary::read() {
     if( digitalRead( rotaryPinB ) == LOW ) {
       rotaryStateWas = stateIs;
       return -1;
-    } else {
+    } 
+    else {
       rotaryStateWas = stateIs;
       return 1;
     }
@@ -32,4 +33,5 @@ int8_t Rotary::read() {
   rotaryStateWas = stateIs;
   return 0;
 }
+
 

@@ -39,7 +39,8 @@ uint8_t Button::read() {
   if( bounceStateWas != bounceState ) {
     bounceTime = micros();
     bounceStateWas = bounceState;
-  } else if( bounceState != stableState ) {
+  } 
+  else if( bounceState != stableState ) {
     if( micros() - bounceTime > holdTime ) {
       stableState = bounceState;
     }
@@ -66,4 +67,5 @@ uint8_t Button::falling() {
   }
   return false;
 }
+
 

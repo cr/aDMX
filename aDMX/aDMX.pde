@@ -40,25 +40,37 @@ void hsv_to_rgb( float Hin, float Sin, float Vin ) {
   int t = V*(1.0-Sin*(1.0-f));
 
   switch( hi ) {  
-    case 0:
-    case 6:
-      R = V; G = t; B = p;
-      break;
-    case 1:
-      R = q; G = V; B = p;
-      break;
-    case 2:
-      R = p; G = V; B = t;
-      break;
-    case 3:
-      R = p; G = q; B = V;
-      break;
-    case 4:
-      R = t; G = p; B = V;
-      break;
-    case 5:
-      R = V; G = p; B = q;
-      break;
+  case 0:
+  case 6:
+    R = V; 
+    G = t; 
+    B = p;
+    break;
+  case 1:
+    R = q; 
+    G = V; 
+    B = p;
+    break;
+  case 2:
+    R = p; 
+    G = V; 
+    B = t;
+    break;
+  case 3:
+    R = p; 
+    G = q; 
+    B = V;
+    break;
+  case 4:
+    R = t; 
+    G = p; 
+    B = V;
+    break;
+  case 5:
+    R = V; 
+    G = p; 
+    B = q;
+    break;
   }
 }
 
@@ -90,14 +102,14 @@ void setup() {
 
   debugSetup( DEBUG_OUT );
   Dmx.begin( 128, TX_OUT, DRV_ENA, RX_IN, RCV_ENA );
-  
+
   clearLamps();
   sendLamps();
   delay( 2000 );
-  
+
   digitalWrite( LED_A, LOW );
   digitalWrite( LED_B, LOW );
-  
+
 }
 
 
@@ -134,79 +146,79 @@ void loop() {
       state = (state+1) % 2;
       Serial.println( state, DEC );
     }
-    
+
     d = rotary.read();
     if( d != 0 ) {
-      
+
       switch( state ) {
 
-        case 0:
-          if( d > 0 )
-            bpm *= 1.05;
-          else
-            bpm /= 1.05;
-          fader.timing( bpm, ratio );
-          Serial.print( bpm );
-          Serial.write( ',' );
-          Serial.println( ratio );
-          break;
+      case 0:
+        if( d > 0 )
+          bpm *= 1.05;
+        else
+          bpm /= 1.05;
+        fader.timing( bpm, ratio );
+        Serial.print( bpm );
+        Serial.write( ',' );
+        Serial.println( ratio );
+        break;
 
-        case 1:
-          if( d > 0 )
-            ratio *= 1.05;
-          else
-            ratio /= 1.05;
-          fader.timing( bpm, ratio );
-          Serial.print( bpm );
-          Serial.write( ',' );
-          Serial.println( ratio );
-          break;
-          
-        case 2:
-          angle = (angle + d);
-          if( angle < 0.0 ) angle += 360.0;
-          if( angle > 360.0 ) angle -= 360.0;
-          hsv_to_rgb( angle, sat, value );
-          setLamp( 1, 0, R, G, B, 0 );
-          setLamp( 65, 0, R, G, B, 0 );
-          sendLamps();
-          Serial.print( angle, DEC );
-          Serial.write( ' ' );
-          Serial.print( sat, DEC );
-          Serial.write( ' ' );
-          Serial.println( value, DEC );
-          break;
+      case 1:
+        if( d > 0 )
+          ratio *= 1.05;
+        else
+          ratio /= 1.05;
+        fader.timing( bpm, ratio );
+        Serial.print( bpm );
+        Serial.write( ',' );
+        Serial.println( ratio );
+        break;
 
-        case 3:
-          sat = sat + 0.01*d;
-          if( sat < 0.0 ) sat = 0.0;
-          if( sat > 1.0 ) sat = 1.0;
-          hsv_to_rgb( angle, sat, value );
-          setLamp( 1, 0, R, G, B, 0 );
-          setLamp( 65, 0, R, G, B, 0 );
-          sendLamps();
-          Serial.print( angle, DEC );
-          Serial.write( ' ' );
-          Serial.print( sat, DEC );
-          Serial.write( ' ' );
-          Serial.println( value, DEC );
-          break;
-          
-        case 4:
-          value = value + 0.01*d;
-          if( value < 0.0 ) value = 0.0;
-          if( value > 1.0 ) value = 1.0;
-          hsv_to_rgb( angle, sat, value );
-          setLamp( 1, 0, R, G, B, 0 );
-          setLamp( 65, 0, R, G, B, 0 );
-          sendLamps();
-          Serial.print( angle, DEC );
-          Serial.write( ' ' );
-          Serial.print( sat, DEC );
-          Serial.write( ' ' );
-          Serial.println( value, DEC );
-          break;
-          
+      case 2:
+        angle = (angle + d);
+        if( angle < 0.0 ) angle += 360.0;
+        if( angle > 360.0 ) angle -= 360.0;
+        hsv_to_rgb( angle, sat, value );
+        setLamp( 1, 0, R, G, B, 0 );
+        setLamp( 65, 0, R, G, B, 0 );
+        sendLamps();
+        Serial.print( angle, DEC );
+        Serial.write( ' ' );
+        Serial.print( sat, DEC );
+        Serial.write( ' ' );
+        Serial.println( value, DEC );
+        break;
+
+      case 3:
+        sat = sat + 0.01*d;
+        if( sat < 0.0 ) sat = 0.0;
+        if( sat > 1.0 ) sat = 1.0;
+        hsv_to_rgb( angle, sat, value );
+        setLamp( 1, 0, R, G, B, 0 );
+        setLamp( 65, 0, R, G, B, 0 );
+        sendLamps();
+        Serial.print( angle, DEC );
+        Serial.write( ' ' );
+        Serial.print( sat, DEC );
+        Serial.write( ' ' );
+        Serial.println( value, DEC );
+        break;
+
+      case 4:
+        value = value + 0.01*d;
+        if( value < 0.0 ) value = 0.0;
+        if( value > 1.0 ) value = 1.0;
+        hsv_to_rgb( angle, sat, value );
+        setLamp( 1, 0, R, G, B, 0 );
+        setLamp( 65, 0, R, G, B, 0 );
+        sendLamps();
+        Serial.print( angle, DEC );
+        Serial.write( ' ' );
+        Serial.print( sat, DEC );
+        Serial.write( ' ' );
+        Serial.println( value, DEC );
+        break;
+
       }
 
     }
@@ -214,7 +226,7 @@ void loop() {
     if( state < 2 && millis() - last > 5 ) {
       last = millis();
       fader.update();
-      
+
       nR = (uint8_t) 255.0*fader.R;
       nG = (uint8_t) 255.0*fader.G;
       nB = (uint8_t) 255.0*fader.B;
@@ -226,8 +238,9 @@ void loop() {
         pG = nG;
         pB = nB;
       }
-   }
+    }
 
   }
 
 }
+

@@ -37,7 +37,7 @@ void dmxSetup( uint16_t channels, uint8_t txPin, uint8_t drvEnablePin, uint8_t r
     pinMode( dmxRxPin, INPUT );
   if( dmxTxPin > 0 ) 
     pinMode( dmxTxPin, OUTPUT );
-  
+
   //dmxModeDisable();
   //dmxModeSend();
 
@@ -87,13 +87,18 @@ void dmxBitout( volatile uint8_t * p, uint8_t m, uint8_t v ) {
     //nop32; nop16; nop4; nop2;
     //nop32; nop8; nop4; nop2; nop;
     // almost: nop32; nop16;
-    nop32; nop8; nop4;
-  } else {
+    nop32; 
+    nop8; 
+    nop4;
+  } 
+  else {
     *p |= m;
     //nop32; nop16; nop2;
     //nop32; nop16;
     // almost: nop32; nop8; nop2;
-    nop32; nop8; nop4;
+    nop32; 
+    nop8; 
+    nop4;
   }
 }
 
@@ -106,7 +111,8 @@ volatile void dmxSendByte( uint8_t c ) {
 
   cli();
   while( v != 0 ) {
-    dmxBitout( dmxTxPort, dmxTxBitMask, v&1 ); v >>= 1;
+    dmxBitout( dmxTxPort, dmxTxBitMask, v&1 ); 
+    v >>= 1;
   }
 
   sei();
@@ -135,11 +141,11 @@ void dmxSend() {
   while( len-- > 0 ) dmxSendByte( *(msg++) );
   delayMicroseconds( 1000 );
 
- // dmxModeDisable();
+  // dmxModeDisable();
 }
 
 void DmxBus::begin( uint16_t channels, uint8_t txPin, uint8_t drvEnablePin, uint8_t rxPin, uint8_t rcvEnablePin ) {
- dmxSetup( channels, txPin, drvEnablePin, rxPin, rcvEnablePin );
+  dmxSetup( channels, txPin, drvEnablePin, rxPin, rcvEnablePin );
 }
 
 void DmxBus::clear() {
@@ -151,7 +157,7 @@ void DmxBus::set( uint16_t channel, uint8_t value ) {
 }
 
 void DmxBus::send() {
-    dmxSend();
+  dmxSend();
 }
 
 void DmxBus::end() {
@@ -162,12 +168,13 @@ DmxBus Dmx;
 
 /*
 DmxClient::DmxClient( DmxBus * bus, uint16_t channel ) {
-  dmxClientBus = bus;
-  dmxClientChannel = channel;
-}
+ dmxClientBus = bus;
+ dmxClientChannel = channel;
+ }
+ 
+ DmxClient::set() {
+ 
+ }
+ 
+ */
 
-DmxClient::set() {
-
-}
-
-*/

@@ -5,11 +5,14 @@
 float fadeLinear( float t, float tFadeIn, float tUp, float tFadeOut, float tDown ) {
   if( t < tFadeIn ) {
     return t / tFadeIn ;
-  } else if( t < tFadeIn + tUp ) {
+  } 
+  else if( t < tFadeIn + tUp ) {
     return 1.0;
-  } else if( t < tFadeIn + tUp + tFadeOut ) {
+  } 
+  else if( t < tFadeIn + tUp + tFadeOut ) {
     return 1.0 - ( t - tFadeIn - tUp ) / tFadeOut;
-  } else {
+  } 
+  else {
     return 0.0;
   }
 }
@@ -30,7 +33,7 @@ void AutoFaderRGB::timing( float bpm, float holdRatio ) {
   uint32_t now = millis();
   uint32_t relativeTime = periodTime();
   float periodPercent = ( (float) relativeTime / 1000.0 ) / faderRGBPeriod;
-  
+
   BPM = bpm;
   faderHoldRatio = holdRatio;
   faderPeriod = 60.0 / BPM;
@@ -52,6 +55,7 @@ void AutoFaderRGB::update( void ) {
   t -= faderPeriod;
   if( t < 0.0 ) t += faderRGBPeriod;
   B = fadeLinear( t, faderFadeTime, faderHoldTime, faderFadeTime, 2 * faderHoldTime + faderFadeTime );
-  
+
 }
+
 

@@ -16,22 +16,23 @@ void debugSetup( uint8_t pin ) {
 }
 
 void debug() {
-//  sbi( PORTG,5 );
-//  nop32;
-//  nop16;
-//  nop8;
-//  nop;
-//  cbi( PORTG,5 );
+  //  sbi( PORTG,5 );
+  //  nop32;
+  //  nop16;
+  //  nop8;
+  //  nop;
+  //  cbi( PORTG,5 );
   digitalWrite( debugPin, HIGH );
   delayMicroseconds(1);
   digitalWrite( debugPin, LOW );
 
-//  *debugPort = *debugPort | debugBitMask;
-//  nop32; nop16; nop2;
-//  *debugPort = *debugPort & ~debugBitMask;
-//  bitout( debugPort, debugBitMask, 1 );
-//  bitout( debugPort, debugBitMask, 0 );
-//  bitout( debugPort, debugBitMask, 1 );
-//  bitout( debugPort, debugBitMask, 0 );
+  //  *debugPort = *debugPort | debugBitMask;
+  //  nop32; nop16; nop2;
+  //  *debugPort = *debugPort & ~debugBitMask;
+  //  bitout( debugPort, debugBitMask, 1 );
+  //  bitout( debugPort, debugBitMask, 0 );
+  //  bitout( debugPort, debugBitMask, 1 );
+  //  bitout( debugPort, debugBitMask, 0 );
 }
+
 

@@ -12,18 +12,19 @@ class AutoFaderRGB {
   float faderFadeTime;
   float faderHoldTime;
 
-  private:
-    uint32_t periodTime( void );
-  
-  public:
-    float BPM;
-    float R, G, B;
-    AutoFaderRGB( float bpm, float holdRatio );
-    void timing( float bpm, float holdRatio );
-    void update( void );
+private:
+  uint32_t periodTime( void );
+
+public:
+  float BPM;
+  float R, G, B;
+  AutoFaderRGB( float bpm, float holdRatio );
+  void timing( float bpm, float holdRatio );
+  void update( void );
 
 };
 
 
 #endif // __FADERS_H_
+
 
