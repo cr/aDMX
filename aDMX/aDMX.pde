@@ -135,10 +135,16 @@ void loop() {
 
   float bpm = 120.0;
   float ratio = 3.0;
-  AutoFaderRGB fader ( bpm, ratio );
-  //Rotary rotary ( 34, 35 );
+  AutoFader fader ( bpm, ratio );
+  fader.setColorCount( 6 );
+  fader.setColor( 0, 255, 0, 0 );
+  fader.setColor( 1, 127, 127, 0 );
+  fader.setColor( 2, 0, 255, 0 );
+  fader.setColor( 3, 0, 127, 127 );
+  fader.setColor( 4, 0, 0, 255 );
+  fader.setColor( 5, 127, 0, 127 );
+
   Rotary rotary ( ROTARY_A, ROTARY_B );
-  //Button button ( 36 );
   Button button ( BUTTON_R );
   button.pullup();
   Button buttonA ( BUTTON_A );
@@ -173,7 +179,7 @@ void loop() {
           bpm *= 1.05;
         else
           bpm /= 1.05;
-        fader.timing( bpm, ratio );
+        fader.setTiming( bpm, ratio );
         Serial.print( bpm );
         Serial.write( ',' );
         Serial.println( ratio );
@@ -184,7 +190,7 @@ void loop() {
           ratio *= 1.05;
         else
           ratio /= 1.05;
-        fader.timing( bpm, ratio );
+        fader.setTiming( bpm, ratio );
         Serial.print( bpm );
         Serial.write( ',' );
         Serial.println( ratio );
@@ -243,9 +249,9 @@ void loop() {
       last = millis();
       fader.update();
 
-      nR = (uint8_t) 255.0*fader.R;
-      nG = (uint8_t) 255.0*fader.G;
-      nB = (uint8_t) 255.0*fader.B;
+      nR = fader.R;
+      nG = fader.G;
+      nB = fader.B;
       if( nR != pR || nG != pG || nB != pB ) {
         setLamp( 1, 0, nR, nG, nB, 0 );
         setLamp( 65, 0, nR, nG, nB, 0 );
@@ -259,4 +265,5 @@ void loop() {
   }
 
 }
+
 
