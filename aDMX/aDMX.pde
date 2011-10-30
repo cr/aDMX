@@ -105,7 +105,7 @@ void loop() {
   uint8_t pR=0, pG=0, pB=0, nR, nG, nB;
 
   float bpm = 120.0;
-  float ratio = 3.0;
+  float ratio = 9.0;
   AutoFader fader ( bpm, ratio );
   fader.setColorCount( 6 );
   fader.setColor( 0, 255, 0, 0 );
@@ -161,7 +161,7 @@ void loop() {
         }
         mean = 60.0 / (mean / (float)sync_times_fill);
         if( sync_times_fill >= 4 )
-          fader.setTiming( mean, fader.faderHoldRatio );
+          fader.setTiming( mean, ratio );
         Serial.println( mean );
       }
 
@@ -171,7 +171,7 @@ void loop() {
     // hard sync control with button B
     if( buttonB.falling() ) {
       fader.sync();
-      fader.setTiming( 0.0001, fader.faderHoldRatio );
+      fader.setTiming( 9.0, 0.0001 );
     }
     
     // mode control with rotary button
@@ -188,9 +188,9 @@ void loop() {
 
       case 0:
         if( d > 0 )
-          bpm *= 1.02;
+          bpm *= 1.005;
         else
-          bpm /= 1.02;
+          bpm /= 1.005;
         fader.setTiming( bpm, ratio );
         Serial.print( bpm );
         Serial.write( ',' );
