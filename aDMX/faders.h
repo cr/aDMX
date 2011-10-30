@@ -4,7 +4,6 @@
 #include <inttypes.h>
 
 class AutoFader {
-  float faderHoldRatio;
   uint32_t faderStartTime;
   float faderBeatPeriod;
   uint32_t faderBeatPeriodMillis;
@@ -21,12 +20,14 @@ private:
 
 public:
   float BPM;
+  float faderHoldRatio;
   uint8_t R, G, B;
   AutoFader( float bpm, float hold_ratio );
   void setTiming( float bpm, float hold_ratio );
   void setColorCount( uint8_t count );
   void setColor( uint8_t nr, uint8_t r, uint8_t g, uint8_t b );
   void update( void );
+  void sync( void );
 
 };
 

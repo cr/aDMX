@@ -73,4 +73,22 @@ void AutoFader::update( void ) {
   B = linearFade( faderColorTable[current_color][2], faderColorTable[next_color][2], fade_time, faderFadeTime ); 
 }
 
+void AutoFader::sync( void ) {
+  // keep relative timing position
+  uint32_t now = millis();
+  uint8_t next_color;
+
+  if( beatTime() < 100 ) {
+    // keep color if it just changed
+    next_color = beatColor();
+  } 
+  else {
+    // otherwise advance to next color
+    next_color = ( beatColor() + 1 ) % faderColorCount;
+  }
+
+  faderStartTime = now - (uint32_t) ( (float)next_color * (float)faderBeatPeriodMillis );
+  update();
+}
+
 

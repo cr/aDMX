@@ -109,11 +109,11 @@ void loop() {
   AutoFader fader ( bpm, ratio );
   fader.setColorCount( 6 );
   fader.setColor( 0, 255, 0, 0 );
-  fader.setColor( 1, 127, 127, 0 );
+  fader.setColor( 1, 180, 180, 0 );
   fader.setColor( 2, 0, 255, 0 );
-  fader.setColor( 3, 0, 127, 127 );
+  fader.setColor( 3, 0, 180, 180 );
   fader.setColor( 4, 0, 0, 255 );
-  fader.setColor( 5, 127, 0, 127 );
+  fader.setColor( 5, 180, 0, 180 );
 
   Rotary rotary ( ROTARY_A, ROTARY_B );
   Button button ( BUTTON_R );
@@ -130,10 +130,51 @@ void loop() {
   uint8_t state = 0;
   uint32_t last = millis();
   uint8_t blast = LOW;
-  uint8_t now;
+  //uint8_t now;
+
+  uint32_t sync_times[8];
+  uint8_t sync_times_head = 0;
+  uint8_t sync_times_fill = 0;
+  uint32_t previous_sync = micros();
+  uint32_t now;
+  float mean;
 
   while( 1 ) {
 
+    // fluent sync control with button A
+    if( buttonA.falling() ) {
+      now = micros();
+      fader.sync();
+      if( (now - previous_sync) > 4000000 ) {
+        sync_times_head = 0;
+        sync_times_fill = 0;
+      } else {
+        sync_times[sync_times_head] = now - previous_sync;
+        sync_times_head++;
+        sync_times_head %= 8;
+        sync_times_fill++;
+        if( sync_times_fill > 8 ) sync_times_fill = 8;
+  
+        mean = 0.0;
+        for( int i=0 ; i < sync_times_fill ; i++ ) {
+          mean += ((float)sync_times[i]) / 1000000.0;
+        }
+        mean = 60.0 / (mean / (float)sync_times_fill);
+        if( sync_times_fill >= 4 )
+          fader.setTiming( mean, fader.faderHoldRatio );
+        Serial.println( mean );
+      }
+
+      previous_sync = now;
+    }
+
+    // hard sync control with button B
+    if( buttonB.falling() ) {
+      fader.sync();
+      fader.setTiming( 0.0001, fader.faderHoldRatio );
+    }
+    
+    // mode control with rotary button
     if( button.falling() ) {
       //state = ((state-2)+1) % 3 + 2;
       state = (state+1) % 2;
