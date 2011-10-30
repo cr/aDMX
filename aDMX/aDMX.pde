@@ -188,9 +188,9 @@ void loop() {
 
       case 0:
         if( d > 0 )
-          bpm *= 1.05;
+          bpm *= 1.02;
         else
-          bpm /= 1.05;
+          bpm /= 1.02;
         fader.setTiming( bpm, ratio );
         Serial.print( bpm );
         Serial.write( ',' );
