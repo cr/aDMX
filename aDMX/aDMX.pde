@@ -3,6 +3,7 @@
 #include "rotary.h"
 #include "faders.h"
 #include "button.h"
+#include "led.h"
 
 //#inlude "pins_v1.h"
 #include "pins_v2.h"
@@ -78,24 +79,23 @@ void sendLamps() {
   Dmx.send();
 }
 
+Led LedR( LED_A );
+Led LedG( LED_B );
 
 void setup() {
   Serial.begin( 115200 );
-
-  pinMode( LED_A, OUTPUT );
-  digitalWrite( LED_A, HIGH );
-  pinMode( LED_B, OUTPUT );
-  digitalWrite( LED_B, HIGH );
 
   debugSetup( DEBUG_OUT );
   Dmx.begin( 128, TX_OUT, DRV_ENA, RX_IN, RCV_ENA );
 
   clearLamps();
   sendLamps();
-  delay( 2000 );
 
-  digitalWrite( LED_A, LOW );
-  digitalWrite( LED_B, LOW );
+  LedR.on();
+  LedG.on();
+  delay( 2000 );
+  LedR.off();
+  LedG.off();
 
 }
 
@@ -141,6 +141,9 @@ void loop() {
 
   while( 1 ) {
 
+     LedR.update();
+     LedG.update();
+    
     // fluent sync control with button A
     if( buttonA.falling() ) {
       now = micros();
@@ -148,13 +151,14 @@ void loop() {
       if( (now - previous_sync) > 4000000 ) {
         sync_times_head = 0;
         sync_times_fill = 0;
-      } else {
+      } 
+      else {
         sync_times[sync_times_head] = now - previous_sync;
         sync_times_head++;
         sync_times_head %= 8;
         sync_times_fill++;
         if( sync_times_fill > 8 ) sync_times_fill = 8;
-  
+
         mean = 0.0;
         for( int i=0 ; i < sync_times_fill ; i++ ) {
           mean += ((float)sync_times[i]) / 1000000.0;
@@ -166,14 +170,16 @@ void loop() {
       }
 
       previous_sync = now;
+      LedG.flash();
     }
 
     // hard sync control with button B
     if( buttonB.falling() ) {
       fader.sync();
-      fader.setTiming( 9.0, 0.0001 );
+      fader.setTiming( 6.0, 0.0001 );
+      LedG.flash();
     }
-    
+
     // mode control with rotary button
     if( button.falling() ) {
       //state = ((state-2)+1) % 3 + 2;
@@ -277,5 +283,6 @@ void loop() {
   }
 
 }
+
 
 
